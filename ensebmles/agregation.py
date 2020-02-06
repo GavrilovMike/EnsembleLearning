@@ -3,13 +3,13 @@ import numpy as np
 
 print("\n 1st Q Table: \n")
 
-with open("/Users/mgavrilov/Study/ENSEMBLEALGS/learn/se11.pkl", 'rb') as f:
+with open("/Users/mgavrilov/Study/ENSEMBLEALGS/learn/main_QTable.pkl", 'rb') as f:
     Q_table_1st = pickle.load(f)
     print(Q_table_1st)
 
 print("\n 2nd Q Table: \n")
 
-with open("/Users/mgavrilov/Study/ENSEMBLEALGS/learn/se11_rotated.pkl", 'rb') as f2:
+with open("/Users/mgavrilov/Study/ENSEMBLEALGS/learn/rotated_QTable.pkl", 'rb') as f2:
     Q_table_2nd = pickle.load(f2)
     print(Q_table_2nd)
 

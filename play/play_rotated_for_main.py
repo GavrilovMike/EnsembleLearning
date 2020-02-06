@@ -5,8 +5,12 @@ https://github.com/oxwhirl/smac
 """
 from smac.env import StarCraft2Env
 import numpy as np
+# import sys
 import random
 import pickle
+import learn
+# from gym.spaces import Discrete, Box, Dict
+
 
 # Вывод массива целиком
 np.set_printoptions(threshold=np.inf)
@@ -194,11 +198,13 @@ def get_stateFox(agent_posX, agent_posY):
     # if (state > 31):
     #     print('Mistake\n')
     #     error_count += 1
+    #
+    # if (state < 31):
+    #     print('Mistake\n')
+    #     error_count += 1
+    # print ('Error_count+: ',error_count)
 
-    if (state < 31):
-        print('Mistake\n')
-        error_count += 1
-    print ('Error_count+: ',error_count)
+
     return state
 
 
@@ -215,26 +221,21 @@ qt_arr[act_ind]= 0.0
 
 
 def select_actionFox(state, avail_actions_ind, n_actionsFox, epsilon, Q_table):
-    if random.uniform(0, 1) < (1 - epsilon):
-        action = np.random.choice(avail_actions_ind)  # Explore action space
-    else:
+    qt_arr = np.zeros(len(avail_actions_ind))
+    # Функция arange() возвращает одномерный массив с равномерно разнесенными значениями внутри заданного интервала.
+    keys = np.arange(len(avail_actions_ind))
+    # print ("keys =", keys)
+    # act_ind_decode= {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6}
+    # Функция zip объединяет в кортежи элементы из последовательностей переданных в качестве аргументов.
+    act_ind_decode = dict(zip(keys, avail_actions_ind))
+    # print ("act_ind_decode=", act_ind_decode)
+    for act_ind in range(len(avail_actions_ind)):
+        qt_arr[act_ind] = Q_table[state, act_ind_decode[act_ind]]
+        # print ("qt_arr[act_ind]=",qt_arr[act_ind])
 
-        qt_arr = np.zeros(len(avail_actions_ind))
-
-        # Функция arange() возвращает одномерный массив с равномерно разнесенными значениями внутри заданного интервала.
-        keys = np.arange(len(avail_actions_ind))
-        # print ("keys =", keys)
-        # act_ind_decode= {0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6}
-        # Функция zip объединяет в кортежи элементы из последовательностей переданных в качестве аргументов.
-        act_ind_decode = dict(zip(keys, avail_actions_ind))
-        # print ("act_ind_decode=", act_ind_decode)
-
-        for act_ind in range(len(avail_actions_ind)):
-            qt_arr[act_ind] = Q_table[state, act_ind_decode[act_ind]]
-            # print ("qt_arr[act_ind]=",qt_arr[act_ind])
-
-        # Returns the indices of the maximum values along an axis.
-        action = act_ind_decode[np.argmax(qt_arr)]  # Exploit learned values
+    # Returns the indices of the maximum values along an axis.
+    # Exploit learned values
+    action = act_ind_decode[np.argmax(qt_arr)]
 
     return action
 
@@ -244,7 +245,7 @@ def main():
     """The StarCraft II environment for decentralised multi-agent micromanagement scenarios."""
     '''difficulty ="1" is VeryEasy'''
     # replay_dir="D:\StarCraft II\Replays\smacfox"
-    env = StarCraft2Env(map_name="1mFOX_rotated", difficulty="1")
+    env = StarCraft2Env(map_name="1mFOX", difficulty="1")
 
     '''env_info= {'state_shape': 48, 'obs_shape': 30, 'n_actions': 9, 'n_agents': 3, 'episode_limit': 60}'''
     env_info = env.get_env_info()
@@ -277,15 +278,21 @@ def main():
     # print ("n_actions=", n_actions)
     n_agents = env_info["n_agents"]
 
-    n_episodes = 100  # количество эпизодов
+    n_episodes = 20  # количество эпизодов
 
+    ############### Параметры обучения здесь нужны для функции select_actionFox ################################
     alpha = 0.9  # learning rate sayon - 0.5
     gamma = 0.5  # discount factor sayon - 0.9
     epsilon = 0.7  # e-greedy
 
     n_statesFox = 76  # количество состояний нашего мира-сетки
     n_actionsFox = 7  # вводим свое количество действий, которые понадобятся
-    Q_table = np.zeros([n_statesFox, n_actions])  # задаем пустую q таблицу
+    ##################################################################################################
+    total_reward = 0
+
+    with open("/Users/mgavrilov/Study/ENSEMBLEALGS/learn/rotated_QTable.pkl", 'rb') as f:
+        Q_table = pickle.load(f)
+        print(Q_table)
 
     # print (Q_table)
 
@@ -296,6 +303,7 @@ def main():
         ''' Battle is over terminated = True'''
         terminated = False
         episode_reward = 0
+        actions_history = []
 
         # n_steps = 1 #пока не берем это количество шагов для уменьгения награды за долгий поиск
 
@@ -330,10 +338,7 @@ def main():
                 unit = env.get_unit_by_id(agent_id)
                 # получаем состояние по координатам юнита
                 stateFox = get_stateFox(unit.pos.x, unit.pos.y)
-                # print ("state=", state)
-                # print("Unit pos x + ", unit.pos.x, '\n')
-                # print("Unit pos y + ", unit.pos.y, '\n')
-                # print("State Fox + ", stateFox)
+                # print ("state=", stateFox)
 
                 '''
                 tag = unit.tag #много разных характеристик юнита
@@ -350,6 +355,7 @@ def main():
                 action = select_actionFox(stateFox, avail_actions_ind, n_actionsFox, epsilon, Q_table)
                 # собираем действия от разных агентов
                 actions.append(action)
+                actions_history.append(action)
 
                 ###############_Бежим вправо и стреляем_################################
                 """
@@ -378,33 +384,32 @@ def main():
             episode_reward += reward
 
             ###################_Обучаем_##############################################
-
+            """
             for agent_id in range(n_agents):
-                # получаем характеристики юнита
+                #получаем характеристики юнита
                 unit = env.get_unit_by_id(agent_id)
-                # получаем состояние по координатам юнита
+                #получаем состояние по координатам юнита
                 stateFox_next = get_stateFox(unit.pos.x, unit.pos.y)
 
-            # поменять название на Qlearn
-            # подумать над action ведь здесь это последнее действие
-            # Qlearn(stateFox, stateFox_next, reward, action)
+            #поменять название на Qlearn
+            #подумать над action ведь здесь это последнее действие
+            #Qlearn(stateFox, stateFox_next, reward, action)
 
             Q_table[stateFox, action] = Q_table[stateFox, action] + alpha * \
-                                        (reward + gamma * np.max(Q_table[stateFox_next, :]) - Q_table[stateFox, action])
-
+                             (reward + gamma * np.max(Q_table[stateFox_next, :]) - Q_table[stateFox, action])
+            """
             ##########################################################################
-
+        total_reward += episode_reward
         # Total reward in episode 4 = 20.0
         print("Total reward in episode {} = {}".format(e, episode_reward))
         # get_stats()= {'battles_won': 2, 'battles_game': 5, 'battles_draw': 0, 'win_rate': 0.4, 'timeouts': 0, 'restarts': 0}
         print("get_stats()=", env.get_stats())
+        print("actions_history=", actions_history)
 
     # env.save_replay() """Save a replay."""
+    print("Average reward = ", total_reward / n_episodes)
     """"Close StarCraft II."""""
     env.close()
-    print(Q_table)
-    with open("rotated_QTable.pkl", 'wb') as f:
-        pickle.dump(Q_table, f)
 
 
 if __name__ == "__main__":

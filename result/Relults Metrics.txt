@@ -1,0 +1,28 @@
+Main for Main:
+Actions history: [4, 4, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6] 
+Average reward =  13.317647058823528
+
+
+Rotated for Rotated:
+Actions history: [5, 3, 2, 3, 2, 3, 2, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+Average reward =  17.494117647058825
+
+
+Main for Rotated:
+Actions history: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+Average reward =  0.0
+
+
+Rotated for Main:
+Actions history: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+Average reward =  0.0
+
+
+Agregation for Main:
+Actions history: [4, 4, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+Average reward =  12.482352941176469
+
+
+Agregation for Rotated:
+Actions history: [5, 3, 2, 3, 2, 3, 2, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+Average reward =  13.317647058823525

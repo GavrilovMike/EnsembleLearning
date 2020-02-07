@@ -290,7 +290,7 @@ def main():
     ##################################################################################################
     total_reward = 0
 
-    with open("/Users/mgavrilov/Study/ENSEMBLEALGS/ensebmles/Agregation/Agregation.pkl", 'rb') as f:
+    with open("/Users/mgavrilov/Study/ENSEMBLEALGS/ensebmles/AdaBoost/Ada_Boost_QTable.pkl", 'rb') as f:
         Q_table = pickle.load(f)
         print(Q_table)
 

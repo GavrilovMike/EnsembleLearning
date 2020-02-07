@@ -40,7 +40,7 @@ Average reward =  10.811764705882348
 
 Bagging for Main:
 Actions history: [4, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
-Average reward =  11.64705882352941
+Average reward =  11.5
 
 
 Bagging for Rotated:

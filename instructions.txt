@@ -1,0 +1,9 @@
+1). Copy Maps from Maps folder to the /Applications/StarCraft II/Maps  Folder for your PC
+2). Fit (install) all required packages from requirements.txt file
+3). Each enseble mechanism is located in ensebmles folder
+4). To run the game you can use files from play folder
+5). Before Run make sure that ensebmle algorith file (e.g. Agregation.py) has been executed and QTable for it has been created
+6). Specify the path to the generated QTable for each play file, e.g.:
+    with open("/Users/mgavrilov/Study/ENSEMBLEALGS/ensebmles/Boosting/Ada_Boost_QTable.pkl", 'rb') as f:
+        Q_table = pickle.load(f)
+        print(Q_table)

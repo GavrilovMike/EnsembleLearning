@@ -8,6 +8,9 @@ iris = datasets.load_iris()
 X = iris.data
 y = iris.target
 
+print('data: ', X, '\n')
+print('target: ', y, '\n')
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 print ('X_train ', X_train , '\n')
 print ('X_test ', X_test , '\n')

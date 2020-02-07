@@ -36,7 +36,7 @@ for i in range (76):
         if (qtable_X[i][j] > max_value_X):
             max_value_X = qtable_X[i][j]
             max_index_X = j
-            print('Index: ', max_index_X, '\n')
+            # print('Index: ', max_index_X, '\n')
             qtable_decisioned_X[i] = max_index_X
 
 
@@ -167,7 +167,7 @@ for i in range (76):
 
 
 
-print('AdaBoost QTable: \n', Q_table_adaboost, '\n')
+print('Boosting QTable: \n', Q_table_adaboost, '\n')
 print(Q_table_adaboost.shape)
 
 

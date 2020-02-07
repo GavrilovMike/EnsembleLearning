@@ -245,7 +245,7 @@ def main():
     """The StarCraft II environment for decentralised multi-agent micromanagement scenarios."""
     '''difficulty ="1" is VeryEasy'''
     # replay_dir="D:\StarCraft II\Replays\smacfox"
-    env = StarCraft2Env(map_name="1mFOX", difficulty="1")
+    env = StarCraft2Env(map_name="1mFOX_rotated", difficulty="1")
 
     '''env_info= {'state_shape': 48, 'obs_shape': 30, 'n_actions': 9, 'n_agents': 3, 'episode_limit': 60}'''
     env_info = env.get_env_info()
@@ -290,7 +290,7 @@ def main():
     ##################################################################################################
     total_reward = 0
 
-    with open("/Users/mgavrilov/Study/ENSEMBLEALGS/ensebmles/Boosting/Ada_Boost_QTable.pkl", 'rb') as f:
+    with open("/Users/mgavrilov/Study/ENSEMBLEALGS/ensebmles/Bagging/Bagging_QTable.pkl", 'rb') as f:
         Q_table = pickle.load(f)
         print(Q_table)
 

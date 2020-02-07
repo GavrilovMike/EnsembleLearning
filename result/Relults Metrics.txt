@@ -56,3 +56,13 @@ Average reward =  9.141176470588231
 Stacking for Rotated:
 Actions history: [5, 1, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
 Average reward =  15.823529411764705
+
+
+Voting for Main:
+Actions history: [4, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+Average reward =  11.64705882352941
+
+
+Voting for Rotated:
+Actions history: [5, 1, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+Average reward =  15.823529411764707

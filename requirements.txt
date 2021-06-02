@@ -29,6 +29,6 @@ six==1.14.0
 sk-video==1.1.10
 sklearn==0.0
 SMAC==0.1.0b1
-urllib3==1.25.8
+urllib3==1.26.5
 websocket-client==0.57.0
 whichcraft==0.6.1
